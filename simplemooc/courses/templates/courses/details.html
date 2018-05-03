@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+<div class="splash">
+    <div class="pure-g-r">
+        <div class="pure-u-1">
+            <div class="l-box splash-text">
+                <h1 class="splash-head">
+                    {{ course }}
+                </h1>
+                <h2 class="splash-subhead">
+                    {{ course.description }}
+                </h2>
+                <p>
+                    <a href="#" class="pure-button primary-button">Inscreva-se</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="pure-g-r content-ribbon">
+    <div class="pure-u-2-3">
+        <div class="l-box">
+            <h4 class="content-subhead">Sobre o Curso</h4>
+            {{ course.about|linebreaks }}
+        </div>
+    </div>
+    <div class="pure-u-1-3">
+        <div class="l-box">
+            {% if course.image %}
+            <img src="{{ course.image.url }}" alt="" />
+            {% else %}
+            <img src="{% static 'img/course-image.png' %}" alt="" />
+            {% endif %}
+            <h4>Dúvidas?</h4>
+            <p>
+                <a href="#contato" title="" class="pure-button">Fale Conosco</a>
+            </p>
+        </div>
+    </div>
+</div>
+<div class="pure-g-r content-ribbon" id="contato">
+    <div class="pure-u-1">
+        <h3>Tire sua dúvida sobre o Curso</h3>
+        {% if is_valid %}
+        <p>Você enviou o formulário com sucesso</p>
+        {% endif %}
+        <form action="#contato" class="pure-form pure-form-aligned" method="post">
+            {% csrf_token %}
+            <fieldset>
+                {% for field in form %}
+                <div class="pure-control-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                    <ul class="errorlist">
+                        {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <div class="pure-controls">
+                    <button type="submit" class="pure-button pure-button-primary">Enviar</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+{% endblock %}
